@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Icon } from '@chakra-ui/react';
-import { MdBarChart, MdHome, MdLock } from 'react-icons/md';
+import { MdBarChart, MdHome, MdLock, MdAccountTree } from 'react-icons/md';
 
 // Admin Imports
 import MainDashboard from 'views/admin/default';
@@ -9,6 +9,7 @@ import DataTables from 'views/admin/dataTables';
 
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
+import Branch from 'views/admin/branch/index.jsx';
 
 const routes = [
   {
@@ -28,6 +29,8 @@ const routes = [
   {
     name: 'Data Tables',
     layout: '/admin',
+    path: '/data-tables',
+    component: DataTables,
     icon: (
       <Icon
         as={MdBarChart}
@@ -36,8 +39,20 @@ const routes = [
         color="inherit"
       />
     ),
-    path: '/data-tables',
-    component: DataTables,
+  },
+  {
+    name: 'Chi',
+    layout: '/admin',
+    path: '/branch',
+    component: Branch,
+    icon: (
+      <Icon
+        as={MdAccountTree}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
   },
   {
     name: 'Sign In',
