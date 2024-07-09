@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Icon } from '@chakra-ui/react';
-import { MdBarChart, MdHome, MdLock, MdAccountTree } from 'react-icons/md';
+import { MdBarChart, MdHome, MdLock, MdAccountTree, MdOutlineExtension } from 'react-icons/md';
 
 // Admin Imports
 import MainDashboard from 'views/admin/default';
@@ -10,6 +10,7 @@ import DataTables from 'views/admin/dataTables';
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
 import Branch from 'views/admin/branch/index.jsx';
+import Group from 'views/admin/group/index.jsx';
 
 const routes = [
   {
@@ -34,6 +35,20 @@ const routes = [
     icon: (
       <Icon
         as={MdBarChart}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+  },
+  {
+    name: 'Phái',
+    layout: '/admin',
+    path: '/group',
+    component: Group,
+    icon: (
+      <Icon
+        as={MdOutlineExtension}
         width="20px"
         height="20px"
         color="inherit"

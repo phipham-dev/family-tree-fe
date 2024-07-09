@@ -1,15 +1,15 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import lodash from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import ListBranch from './components/ListBranch.js';
-import CreateBranch from './components/CreateBranch.js';
+import ListGroup from './components/ListGroup.js';
+import CreateGroup from './components/CreateGroup.js';
 import axiosHelper from 'helpers/axios.helper.js';
 import { LIST_PATH } from './variables/path.js';
 
 const pageSizeOptions = [10, 20, 30, 40, 50];
 
-export default function Branch() {
-  const [branches, setBranches] = useState([]);
+export default function Group() {
+  const [docs, setDocs] = useState([]);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(pageSizeOptions[0]);
@@ -17,7 +17,7 @@ export default function Branch() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);
 
-  const fetchBranchData = useCallback(async () => {
+  const fetchListData = useCallback(async () => {
     try {
       const skip = (page - 1) * limit;
       const result = await axiosHelper.be1.get(`${LIST_PATH}`, {
@@ -30,7 +30,7 @@ export default function Branch() {
       const data = lodash.get(result, 'data.metadata.data', []);
       const total = lodash.get(result, 'data.metadata.total', 0);
       if (!lodash.isEmpty(data)) {
-        setBranches(data);
+        setDocs(data);
         setTotalPages(Math.ceil(total / limit));
       }
     } catch (error) {
@@ -42,8 +42,8 @@ export default function Branch() {
   }, [page, limit]);
 
   useEffect(() => {
-    fetchBranchData();
-  }, [isSuccess, isUpdateSuccess, fetchBranchData]);
+    fetchListData();
+  }, [isSuccess, isUpdateSuccess, fetchListData]);
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
@@ -53,8 +53,8 @@ export default function Branch() {
         spacing={{ base: '20px', md: '20px', lg: '20px', '2xl': '20px' }}
       >
         <Box>
-          <ListBranch
-            branches={branches}
+          <ListGroup
+            docs={docs}
             page={page}
             limit={limit}
             totalPages={totalPages}
@@ -66,7 +66,7 @@ export default function Branch() {
         </Box>
 
         <Box>
-          <CreateBranch setIsSuccess={setIsSuccess} />
+          <CreateGroup setIsSuccess={setIsSuccess} />
         </Box>
       </SimpleGrid>
     </Box>

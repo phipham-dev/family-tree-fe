@@ -16,6 +16,10 @@ class Axios {
   post(url, data) {
     return this.instance.post(url, data);
   }
+
+  patch(url, data) {
+    return this.instance.patch(url, data);
+  }
 }
 
 const be1 = new Axios(BE_1_URL, true);

@@ -18,16 +18,16 @@ import {
 } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { convertTime } from 'utils/time.util.js';
-import EditBranch from './EditBranch.js';
+import EditGroup from './EditGroup.js';
 
 const headerGroups = ['Tên', 'Mã', 'Ngày tạo', 'Ngày cập nhật', 'Trạng thái', 'Hành động'];
 const pageSizeOptions = [10, 20, 30, 40, 50];
 
-export default function ListBranch({ branches, page, limit, totalPages, setPage, setLimit, setIsUpdateSuccess }) {
+export default function ListGroup({ docs, page, limit, totalPages, setPage, setLimit, setIsUpdateSuccess }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedBranch, setSelectedBranch] = useState(null);
+  const [selectedDoc, setSelectedDoc] = useState(null);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -39,7 +39,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
   };
 
   const handleEditClick = (branch) => {
-    setSelectedBranch(branch);
+    setSelectedDoc(branch);
     onOpen();
   };
 
@@ -86,7 +86,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
           </Tr>
         </Thead>
         <Tbody>
-          {branches.map((e) => {
+          {docs.map((e) => {
             return (
               <Tr key={e._id}>
                 <Td>
@@ -163,10 +163,10 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
         </Tbody>
       </Table>
 
-      {selectedBranch && (
-        <EditBranch
-          selectedBranch={selectedBranch}
-          setSelectedBranch={setSelectedBranch}
+      {selectedDoc && (
+        <EditGroup
+          selectedDoc={selectedDoc}
+          setSelectedDoc={setSelectedDoc}
           isOpen={isOpen}
           onClose={onClose}
           setIsUpdateSuccess={setIsUpdateSuccess}
