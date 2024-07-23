@@ -1,3 +1,4 @@
+import lodash from 'lodash';
 import axiosHelper from 'helpers/axios.helper.js';
 import { showSuccessAlert, showWarningAlert, showErrorAlert } from 'helpers/response.helper.js';
 import { useState } from 'react';
@@ -15,14 +16,22 @@ import {
   Button,
   Text,
   Textarea,
+  useColorModeValue,
+  Select,
+  Box,
+  Spinner,
 } from '@chakra-ui/react';
 import Card from 'components/card/Card.js';
 import { UPDATE_PATH } from '../variables/path.js';
+import { LIST_PATH as GROUP_LIST_PATH } from 'views/admin/group/variables/path.js';
+import { group } from 'd3';
 
 const ERROR_FONTSIZE = { base: 'xs', sm: 'xs', md: 'xs', lg: 'sm', xl: 'sm' };
 
 export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, onClose, setIsUpdateSuccess }) {
   const [updatedBranch, setUpdatedBranch] = useState(selectedBranch);
+  const [groups, setGroups] = useState(selectedBranch.group ? [selectedBranch.group] : []);
+  const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({});
 
@@ -61,15 +70,50 @@ export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, 
     });
   };
 
+  const fetchGroups = async () => {
+    setLoading(true);
+    try {
+      const result = await axiosHelper.be1.get(GROUP_LIST_PATH);
+      const data = lodash.get(result, 'data.metadata.data', []);
+      if (!lodash.isEmpty(data)) {
+        setGroups(data);
+      }
+    } catch (error) {
+      console.error('Error fetching groups:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectOpen = () => {
+    fetchGroups();
+  };
+
+  const handleSelectChange = (event) => {
+    const selectedGroupId = event.target.value;
+    const selectedGroup = groups.find((group) => group._id === selectedGroupId);
+
+    if (selectedGroup) {
+      setUpdatedBranch({
+        ...updatedBranch,
+        group: selectedGroup,
+      });
+    }
+  };
+
   const handleUpdateSave = async () => {
     try {
       if (Object.keys(errors).length === 0) {
         if (
           selectedBranch.name !== updatedBranch.name ||
           selectedBranch.description !== updatedBranch.description ||
-          selectedBranch.activated !== updatedBranch.activated
+          selectedBranch.activated !== updatedBranch.activated ||
+          lodash.get(selectedBranch, 'group._id') !== lodash.get(updatedBranch, 'group._id')
         ) {
-          await axiosHelper.be1.patch(`${UPDATE_PATH}/${updatedBranch._id}`, updatedBranch);
+          await axiosHelper.be1.patch(`${UPDATE_PATH}/${updatedBranch._id}`, {
+            ...updatedBranch,
+            group: updatedBranch.group._id,
+          });
           setSelectedBranch(null);
           setUpdatedBranch({});
           setIsUpdateSuccess(true);
@@ -82,6 +126,7 @@ export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, 
         return false;
       }
     } catch (error) {
+      console.log(error);
       showErrorAlert(error);
       setIsUpdateSuccess(false);
     }
@@ -92,6 +137,8 @@ export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, 
     setUpdatedBranch({});
     onClose();
   };
+
+  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 
   return (
     <Card>
@@ -106,6 +153,7 @@ export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, 
         <ModalContent>
           <ModalHeader>Chỉnh sửa</ModalHeader>
           <ModalBody>
+            {/* Tên */}
             <FormControl>
               <FormLabel>
                 Tên{' '}
@@ -131,6 +179,8 @@ export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, 
                 </Text>
               )}
             </FormControl>
+
+            {/* Code */}
             <FormControl mt={4}>
               <FormLabel>Code</FormLabel>
               <Input
@@ -139,6 +189,69 @@ export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, 
                 isDisabled={true}
               />
             </FormControl>
+
+            {/* Phái */}
+            <FormControl
+              isInvalid={errors.group}
+              mb={4}
+            >
+              <FormLabel>
+                <Text
+                  fontSize={{ sm: '12px', lg: '15px' }}
+                  borderColor={borderColor}
+                  color="gray.400"
+                >
+                  Phái{' '}
+                  <Text
+                    as="span"
+                    color="red.500"
+                  >
+                    *
+                  </Text>
+                </Text>
+              </FormLabel>
+              <Select
+                placeholder={!updatedBranch.group ? 'Chọn phái' : ''}
+                onFocus={handleSelectOpen}
+                onChange={handleSelectChange}
+                value={updatedBranch.group ? updatedBranch.group._id : ''}
+              >
+                {loading ? (
+                  <option
+                    value=""
+                    disabled
+                  >
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Spinner size="sm" />
+                    </Box>
+                  </option>
+                ) : (
+                  groups.map((group) => (
+                    <option
+                      key={group._id}
+                      value={group._id}
+                    >
+                      {group.name}
+                    </option>
+                  ))
+                )}
+              </Select>
+              {errors.group && (
+                <Text
+                  pt={1}
+                  color="red.400"
+                  fontSize={{ ...ERROR_FONTSIZE }}
+                >
+                  {errors.group}
+                </Text>
+              )}
+            </FormControl>
+
+            {/* Mô tả */}
             <FormControl mt={4}>
               <FormLabel>Mô tả</FormLabel>
               <Textarea
@@ -163,6 +276,8 @@ export default function EditBranch({ selectedBranch, setSelectedBranch, isOpen, 
                 </Text>
               )}
             </FormControl>
+
+            {/* Trạng Thái */}
             <FormControl mt={4}>
               <FormLabel>Trạng thái kích hoạt / tạm dừng</FormLabel>
               <Checkbox

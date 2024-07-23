@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import lodash from 'lodash';
 import {
+  Select,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -9,14 +11,21 @@ import {
   Text,
   Flex,
   useColorModeValue,
+  Box,
+  Spinner,
 } from '@chakra-ui/react';
 import Card from 'components/card/Card.js';
 import axiosHelper from 'helpers/axios.helper.js';
 import { showErrorAlert } from 'helpers/response.helper.js';
 import { showSuccessAlert } from 'helpers/response.helper.js';
 import { CREATE_PATH } from '../variables/path.js';
+import { LIST_PATH as GROUP_LIST_PATH } from 'views/admin/group/variables/path.js';
 
 const CreateBranch = ({ setIsSuccess }) => {
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState({});
@@ -25,11 +34,13 @@ const CreateBranch = ({ setIsSuccess }) => {
     try {
       await axiosHelper.be1.post(CREATE_PATH, {
         name: name,
+        group: selectedGroup,
         description: description,
       });
 
       setName('');
       setDescription('');
+      setSelectedGroup('');
       showSuccessAlert('');
       setIsSuccess(true);
     } catch (error) {
@@ -48,6 +59,10 @@ const CreateBranch = ({ setIsSuccess }) => {
       newErrors.name = 'Tên phải nhiều hơn 5 và nhỏ hơn 20 kí tự';
     }
 
+    if (!selectedGroup) {
+      newErrors.group = 'Phải chọn phái';
+    }
+
     if (description.length > 1000) {
       newErrors.description = 'Mô tả không được quá 1000 kí tự';
     }
@@ -58,6 +73,29 @@ const CreateBranch = ({ setIsSuccess }) => {
       // Handle form submission
       submitData();
     }
+  };
+
+  const fetchGroups = async () => {
+    setLoading(true);
+    try {
+      const result = await axiosHelper.be1.get(GROUP_LIST_PATH);
+      const data = lodash.get(result, 'data.metadata.data', []);
+      if (!lodash.isEmpty(data)) {
+        setGroups(data);
+      }
+    } catch (error) {
+      console.error('Error fetching groups:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpen = () => {
+    fetchGroups();
+  };
+
+  const handleChange = (event) => {
+    setSelectedGroup(event.target.value);
   };
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
@@ -82,6 +120,7 @@ const CreateBranch = ({ setIsSuccess }) => {
       </Flex>
 
       <form onSubmit={handleSubmit}>
+        {/* Tên */}
         <FormControl
           isInvalid={errors.name}
           mb={4}
@@ -109,6 +148,60 @@ const CreateBranch = ({ setIsSuccess }) => {
           {errors.name && <FormErrorMessage>{errors.name}</FormErrorMessage>}
         </FormControl>
 
+        {/* Phái */}
+        <FormControl
+          isInvalid={errors.group}
+          mb={4}
+        >
+          <FormLabel>
+            <Text
+              fontSize={{ sm: '12px', lg: '15px' }}
+              borderColor={borderColor}
+              color="gray.400"
+            >
+              Phái{' '}
+              <Text
+                as="span"
+                color="red.500"
+              >
+                *
+              </Text>
+            </Text>
+          </FormLabel>
+          <Select
+            placeholder="Chọn phái"
+            onFocus={handleOpen}
+            onChange={handleChange}
+            value={selectedGroup}
+          >
+            {loading ? (
+              <option
+                value=""
+                disabled
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Spinner size="sm" />
+                </Box>
+              </option>
+            ) : (
+              groups.map((group) => (
+                <option
+                  key={group._id}
+                  value={group._id}
+                >
+                  {group.name}
+                </option>
+              ))
+            )}
+          </Select>
+          {errors.group && <FormErrorMessage>{errors.group}</FormErrorMessage>}
+        </FormControl>
+
+        {/* Mô tả */}
         <FormControl
           isInvalid={errors.description}
           mb={4}
