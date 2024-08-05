@@ -1,3 +1,5 @@
+import lodash from 'lodash';
+
 // Chakra imports
 import { Portal, Box, useDisclosure } from '@chakra-ui/react';
 import Footer from 'components/footer/FooterAdmin.js';
@@ -19,6 +21,8 @@ export default function Dashboard(props) {
   const getRoute = () => {
     return window.location.pathname !== '/admin/full-screen-maps';
   };
+
+  // show path hiện tai
   const getActiveRoute = (routes) => {
     let activeRoute = 'Default Brand Text';
     for (let i = 0; i < routes.length; i++) {
@@ -84,6 +88,7 @@ export default function Dashboard(props) {
   };
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
+      const isHidden = lodash.get(prop, 'hidden', false);
       if (prop.layout === '/admin') {
         return (
           <Route

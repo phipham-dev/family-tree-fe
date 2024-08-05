@@ -11,6 +11,8 @@ import DataTables from 'views/admin/dataTables';
 import SignInCentered from 'views/auth/signIn';
 import Branch from 'views/admin/branch/index.jsx';
 import Group from 'views/admin/group/index.jsx';
+import Person from 'views/admin/person/index.jsx';
+import CreatePerson from 'views/admin/person/components/CreatePerson.js';
 
 const routes = [
   {
@@ -69,6 +71,28 @@ const routes = [
       />
     ),
   },
+  {
+    name: 'Tạo thành viên',
+    layout: '/admin',
+    path: '/person/create',
+    component: CreatePerson,
+    hidden: true, // Đánh dấu route này là ẩn
+  },
+  {
+    name: 'Thành viên',
+    layout: '/admin',
+    path: '/person',
+    component: Person,
+    icon: (
+      <Icon
+        as={MdAccountTree}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+  },
+
   {
     name: 'Sign In',
     layout: '/auth',

@@ -1,14 +1,18 @@
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Box, Button, SimpleGrid } from '@chakra-ui/react';
 import lodash from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
-import ListGroup from './components/ListGroup.js';
-import CreateGroup from './components/CreateGroup.js';
+import ListPerson from './components/ListPerson.js';
 import axiosHelper from 'helpers/axios.helper.js';
 import { LIST_PATH } from './variables/path.js';
+import { AddIcon } from '@chakra-ui/icons';
+import { useHistory, useLocation } from 'react-router-dom';
+import CreateTest from './components/CreateTest.js';
 
 const pageSizeOptions = [10, 20, 30, 40, 50];
 
-export default function Group() {
+export default function Person() {
+  const navigate = useHistory();
+  const location = useLocation();
   const [docs, setDocs] = useState([]);
 
   const [page, setPage] = useState(1);
@@ -45,15 +49,28 @@ export default function Group() {
     fetchListData();
   }, [isSuccess, isUpdateSuccess, fetchListData]);
 
+  const handleEditClick = () => {
+    navigate.push(`${location.pathname}/create`);
+  };
+
   return (
     <Box pt={{ base: '120px', md: '70px', xl: '70px' }}>
+      <CreateTest></CreateTest>
       <SimpleGrid
-        columns={{ sm: 1, md: 1, lg: 2, '2xl': 2 }}
-        templateColumns="2fr 1fr"
+        columns={{ sm: 1, md: 1, lg: 1, '2xl': 1 }}
         spacing={{ base: '20px', md: '20px', lg: '20px', '2xl': '20px' }}
       >
+        <Button
+          leftIcon={<AddIcon />}
+          colorScheme="blue"
+          variant="outline"
+          size="sm"
+          onClick={() => handleEditClick()}
+        >
+          Thêm mới
+        </Button>
         <Box>
-          <ListGroup
+          <ListPerson
             docs={docs}
             page={page}
             limit={limit}
@@ -63,10 +80,6 @@ export default function Group() {
             setIsSuccess={setIsSuccess}
             setIsUpdateSuccess={setIsUpdateSuccess}
           />
-        </Box>
-
-        <Box>
-          <CreateGroup setIsSuccess={setIsSuccess} />
         </Box>
       </SimpleGrid>
     </Box>

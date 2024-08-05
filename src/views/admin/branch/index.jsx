@@ -46,7 +46,7 @@ export default function Branch() {
   }, [isSuccess, isUpdateSuccess, fetchBranchData]);
 
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+    <Box pt={{ base: '120px', md: '70px', xl: '70px' }}>
       <SimpleGrid
         columns={{ sm: 1, md: 1, lg: 2, '2xl': 2 }}
         templateColumns="2fr 1fr"

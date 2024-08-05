@@ -18,16 +18,18 @@ import {
 } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { convertTime } from 'utils/time.util.js';
-import EditBranch from './EditBranch.js';
+import EditPerson from './EditPerson.js';
+import convertMaritalStatus from 'utils/convertMaritalStatus.js';
+import convertLiveStatus from 'utils/convertLiveStatus.js';
 
-const headerGroups = ['Tên', 'Mã', 'Ngày tạo', 'Ngày cập nhật', 'Trạng thái', 'Hành động'];
+const headerGroups = ['Họ và tên', 'CMND/CCCD', 'Ngày sinh', 'Nơi sinh', 'SĐT', 'Hôn nhân', 'Trạng thái', 'Hành động'];
 const pageSizeOptions = [10, 20, 30, 40, 50];
 
-export default function ListBranch({ branches, page, limit, totalPages, setPage, setLimit, setIsUpdateSuccess }) {
+export default function ListPerson({ docs, page, limit, totalPages, setPage, setLimit, setIsUpdateSuccess }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedBranch, setSelectedBranch] = useState(null);
+  const [selectedDoc, setSelectedDoc] = useState(null);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -39,7 +41,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
   };
 
   const handleEditClick = (branch) => {
-    setSelectedBranch(branch);
+    setSelectedDoc(branch);
     onOpen();
   };
 
@@ -86,7 +88,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
           </Tr>
         </Thead>
         <Tbody>
-          {branches.map((e) => {
+          {docs.map((e) => {
             return (
               <Tr key={e._id}>
                 <Td>
@@ -95,7 +97,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
                     fontSize={{ sm: '10px', lg: '12px' }}
                     fontWeight="700"
                   >
-                    {e.name}
+                    {e.fullName}
                   </Text>
                 </Td>
                 <Td>
@@ -104,7 +106,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
                     fontSize={{ sm: '10px', lg: '12px' }}
                     fontWeight="700"
                   >
-                    {e.code}
+                    {e.cic}
                   </Text>
                 </Td>
                 <Td>
@@ -113,7 +115,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
                     fontSize={{ sm: '10px', lg: '12px' }}
                     fontWeight="700"
                   >
-                    {convertTime(e.createdAt, 'DD-MM-YYYY HH:mm:ss')}
+                    {convertTime(e.dateOfBirth, 'DD-MM-YYYY')}
                   </Text>
                 </Td>
                 <Td>
@@ -122,18 +124,37 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
                     fontSize={{ sm: '10px', lg: '12px' }}
                     fontWeight="700"
                   >
-                    {convertTime(e.updatedAt, 'DD-MM-YYYY HH:mm:ss')}
+                    {e.placeOfBirth}
                   </Text>
                 </Td>
                 <Td>
-                  <Flex>
-                    <Icon
-                      as={e.activated ? CheckCircleIcon : CloseIcon} // Sử dụng ternary operator để chọn biểu tượng
-                      boxSize={4} // Kích thước của biểu tượng
-                      color={e.activated ? 'green.500' : 'red.500'} // Màu sắc của biểu tượng
-                    />
-                  </Flex>
+                  <Text
+                    color={textColor}
+                    fontSize={{ sm: '10px', lg: '12px' }}
+                    fontWeight="700"
+                  >
+                    {e.phoneNumber}
+                  </Text>
                 </Td>
+                <Td>
+                  <Text
+                    color={textColor}
+                    fontSize={{ sm: '10px', lg: '12px' }}
+                    fontWeight="700"
+                  >
+                    {convertMaritalStatus(e.maritalStatus)}
+                  </Text>
+                </Td>
+                <Td>
+                  <Text
+                    color={textColor}
+                    fontSize={{ sm: '10px', lg: '12px' }}
+                    fontWeight="700"
+                  >
+                    {convertLiveStatus(e.status)}
+                  </Text>
+                </Td>
+
                 <Td>
                   <Flex>
                     <Button
@@ -163,10 +184,10 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
         </Tbody>
       </Table>
 
-      {selectedBranch && (
-        <EditBranch
-          selectedBranch={selectedBranch}
-          setSelectedBranch={setSelectedBranch}
+      {selectedDoc && (
+        <EditPerson
+          selectedDoc={selectedDoc}
+          setSelectedDoc={setSelectedDoc}
           isOpen={isOpen}
           onClose={onClose}
           setIsUpdateSuccess={setIsUpdateSuccess}
@@ -192,7 +213,7 @@ export default function ListBranch({ branches, page, limit, totalPages, setPage,
           </Box>
           <Button
             onClick={() => handlePageChange(page + 1)}
-            isDisabled={page >= totalPages}
+            isDisabled={page === totalPages}
             rightIcon={<ArrowForwardIcon />}
           ></Button>
         </Box>

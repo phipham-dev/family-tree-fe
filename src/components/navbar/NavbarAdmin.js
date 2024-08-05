@@ -100,7 +100,7 @@ export default function AdminNavbar(props) {
                 href="#"
                 color={secondaryText}
               >
-                Menu
+                Trang chủ
               </BreadcrumbLink>
             </BreadcrumbItem>
 
@@ -135,7 +135,7 @@ export default function AdminNavbar(props) {
               boxShadow: 'none',
             }}
           >
-            {brandText}
+            {/* {brandText} */}
           </Link>
         </Box>
         <Box

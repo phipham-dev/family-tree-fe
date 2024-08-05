@@ -192,7 +192,7 @@ export default function ListGroup({ docs, page, limit, totalPages, setPage, setL
           </Box>
           <Button
             onClick={() => handlePageChange(page + 1)}
-            isDisabled={page === totalPages}
+            isDisabled={page >= totalPages}
             rightIcon={<ArrowForwardIcon />}
           ></Button>
         </Box>
