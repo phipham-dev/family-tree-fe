@@ -6,7 +6,6 @@ import axiosHelper from 'helpers/axios.helper.js';
 import { LIST_PATH } from './variables/path.js';
 import { AddIcon } from '@chakra-ui/icons';
 import { useHistory, useLocation } from 'react-router-dom';
-import CreateTest from './components/CreateTest.js';
 
 const pageSizeOptions = [10, 20, 30, 40, 50];
 
@@ -55,7 +54,6 @@ export default function Person() {
 
   return (
     <Box pt={{ base: '120px', md: '70px', xl: '70px' }}>
-      <CreateTest></CreateTest>
       <SimpleGrid
         columns={{ sm: 1, md: 1, lg: 1, '2xl': 1 }}
         spacing={{ base: '20px', md: '20px', lg: '20px', '2xl': '20px' }}

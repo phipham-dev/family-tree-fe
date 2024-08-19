@@ -32,3 +32,13 @@ export const showErrorAlert = (error, title = 'Lỗi') => {
     confirmButtonText: 'OK',
   });
 };
+
+export const showCustomErrorAlert = (title, message, showConfirmButton = false, timer = 1500) => {
+  Swal.fire({
+    icon: 'error',
+    title: title,
+    text: message,
+    showConfirmButton,
+    timer,
+  });
+};

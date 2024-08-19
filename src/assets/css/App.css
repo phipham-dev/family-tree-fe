@@ -10,3 +10,20 @@ option {
 .swal2-container {
   z-index: 9999 !important; /* Đặt giá trị z-index cao hơn */
 }
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+}
+
+.react-datepicker__month {
+  width: 50%; /* Thay đổi kích thước của popup tháng */
+}
+
+.react-datepicker__header h2:first-of-type {
+  margin-bottom: 10px !important; /* Thay đổi giá trị này theo nhu cầu */
+}

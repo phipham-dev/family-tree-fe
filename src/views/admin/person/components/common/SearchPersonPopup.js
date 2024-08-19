@@ -1,23 +1,13 @@
-import React, { useEffect } from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from '@chakra-ui/react';
+import React from 'react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from '@chakra-ui/react';
 import SearchPerson from './SearchPerson.js';
 
-function PopupSearchPerson({ isOpen, onClose, handleChoose }) {
+function SearchPersonPopup({ isOpen, onClose, onSelected }) {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => onClose(!isOpen)}
+      onClose={onClose}
       closeOnOverlayClick={false}
-      isCentered
     >
       <ModalOverlay />
       <ModalContent
@@ -26,16 +16,16 @@ function PopupSearchPerson({ isOpen, onClose, handleChoose }) {
         maxHeight="auto"
       >
         <ModalHeader>Tìm kiếm theo CMND/Tên/Họ và tên</ModalHeader>
-        <ModalCloseButton onClick={() => onClose(!isOpen)} />
+        <ModalCloseButton />
         <ModalBody
           maxWidth="auto"
           maxHeight="auto"
         >
-          <SearchPerson handleChoose={handleChoose} />
+          <SearchPerson onSelected={onSelected} />
         </ModalBody>
       </ModalContent>
     </Modal>
   );
 }
 
-export default PopupSearchPerson;
+export default SearchPersonPopup;

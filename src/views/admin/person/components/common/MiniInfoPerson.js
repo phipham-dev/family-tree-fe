@@ -5,48 +5,44 @@ import { StatusToVN } from 'constants/model.constant.js';
 import { MaritalStatusToVN } from 'constants/model.constant.js';
 import { convertTime } from 'utils/time.util.js';
 
-const MiniInfoPerson = ({ person, setPerson, removePerson }) => {
+const MiniInfoPerson = ({ information, onSet = null, onRemove }) => {
   return (
     <Box
       p={4}
       borderWidth={1}
       borderRadius="md"
       boxShadow="md"
+      mr={4}
+      width={300}
+      fontSize={12}
     >
       <VStack
         align="start"
-        spacing={3}
+        // spacing={1}
       >
-        <Text fontWeight="bold">
-          <strong>Họ và tên</strong>: {person.fullName}
-        </Text>
-        <Text fontWeight="bold">
-          <strong>CCCD/CMND</strong>: {person.cic}
-        </Text>
-        <Text fontWeight="bold">
-          <strong>Ngày sinh</strong>: {convertTime(person.dateOfBirth)}
-        </Text>
-        <Text fontWeight="bold">
-          <strong>Nơi sinh</strong>: {person.placeOfBirth}
-        </Text>
-        <Text fontWeight="bold">
-          <strong>Tình trạng</strong>: {StatusToVN[person.status]}
-        </Text>
-        <Text fontWeight="bold">
-          <strong>Tình trạng hôn nhân</strong>: {MaritalStatusToVN[person.maritalStatus]}
-        </Text>
+        <Text fontWeight="bold">{information.fullName}</Text>
+        <Text>{information.cic}</Text>
+        <Text>{convertTime(information.dateOfBirth)}</Text>
+        <Text>{information.placeOfBirth}</Text>
+        <Text>{StatusToVN[information.status]}</Text>
+        <Text>{MaritalStatusToVN[information.maritalStatus]}</Text>
       </VStack>
       <HStack
         spacing={4}
         mt={4}
+        justifyContent="flex-end"
       >
         <Button
+          size="sm"
           colorScheme="red"
           onClick={() => {
-            if (lodash.isFunction(removePerson)) {
-              removePerson(person);
+            if (lodash.isFunction(onRemove)) {
+              onRemove(information);
             }
-            setPerson();
+
+            if (lodash.isFunction(onSet)) {
+              onSet({});
+            }
           }}
         >
           Xóa

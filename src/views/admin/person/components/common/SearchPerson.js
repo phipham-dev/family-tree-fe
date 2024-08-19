@@ -20,14 +20,13 @@ import axiosHelper from 'helpers/axios.helper.js';
 import { LIST_PATH } from '../../variables/path.js';
 import convertMaritalStatus from 'utils/convertMaritalStatus.js';
 import convertLiveStatus from 'utils/convertLiveStatus.js';
-import { ArrowBackIcon, ArrowForwardIcon, EditIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { convertTime } from 'utils/time.util.js';
-import { MdOutlineAccessibility } from 'react-icons/md';
 
-const headerGroups = ['Họ và tên', 'CMND/CCCD', 'Ngày sinh', 'Nơi sinh', 'SĐT', 'Hôn nhân', 'Trạng thái', 'Hành động'];
+const headerGroups = ['Họ và tên', 'CMND/CCCD', 'Ngày sinh', 'Nơi sinh', 'Hôn nhân', 'Trạng thái', 'Hành động'];
 const pageSizeOptions = [10, 20, 30, 40, 50];
 
-const SearchPerson = ({ handleChoose }) => {
+const SearchPerson = ({ onSelected }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchOption, setSearchOption] = useState('cic');
 
@@ -177,15 +176,7 @@ const SearchPerson = ({ handleChoose }) => {
                         {e.placeOfBirth}
                       </Text>
                     </Td>
-                    <Td>
-                      <Text
-                        color={textColor}
-                        fontSize={{ sm: '10px', lg: '12px' }}
-                        fontWeight="700"
-                      >
-                        {e.phoneNumber}
-                      </Text>
-                    </Td>
+
                     <Td>
                       <Text
                         color={textColor}
@@ -208,13 +199,12 @@ const SearchPerson = ({ handleChoose }) => {
                     <Td>
                       <Flex>
                         <Button
-                          leftIcon={<MdOutlineAccessibility />}
                           colorScheme="blue"
                           variant="outline"
                           size="sm"
                           mr={2}
                           onClick={() => {
-                            handleChoose(e);
+                            onSelected(e);
                           }}
                         >
                           Chọn
@@ -267,7 +257,6 @@ const SearchPerson = ({ handleChoose }) => {
             </option>
           ))}
         </Select>
-        <Button onClick={() => handleChoose({})}>Huy</Button>
       </Box>
     </Box>
   );
