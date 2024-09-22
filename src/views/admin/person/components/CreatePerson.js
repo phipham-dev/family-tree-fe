@@ -29,7 +29,7 @@ import {
   StatusToVN,
   Gender,
   GenderToVN,
-  NATIONALITY_DEFAULT,
+  Countries,
   Provinces,
   MaritalStatus as MaritalStatusEnum,
   MaritalStatusToVN,
@@ -61,7 +61,7 @@ const CreatePerson = () => {
   const [branches, setBranches] = useState([]);
   const [genNum, setGenNum] = useState('');
   const [placeOfBirth, setPlaceOfBirth] = useState(Provinces[0]);
-  const [nationality, setNationality] = useState(NATIONALITY_DEFAULT);
+  const [nationality, setNationality] = useState(Countries[0]);
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
@@ -454,7 +454,7 @@ const CreatePerson = () => {
     setEmailAddress('');
     setGender(Gender.MALE);
     setPlaceOfBirth(Provinces[0]);
-    setNationality(NATIONALITY_DEFAULT);
+    setNationality(Countries[0]);
     setAddress('');
     setStatus(Status.UNKNOWN);
     setMaritalStatus(MaritalStatusEnum.UNKNOWN);
@@ -799,8 +799,16 @@ const CreatePerson = () => {
                 value={nationality}
                 onChange={(e) => setNationality(e.target.value)}
               >
-                <option value={NATIONALITY_DEFAULT}>{NATIONALITY_DEFAULT}</option>
-                <option value="Nước Ngoài">Nước Ngoài</option>
+                {Countries.map((v, k) => {
+                  return (
+                    <option
+                      key={k}
+                      value={v}
+                    >
+                      {v}
+                    </option>
+                  );
+                })}
               </Select>
             </FormControl>
           </Flex>

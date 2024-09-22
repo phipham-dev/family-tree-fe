@@ -111,4 +111,16 @@ const Provinces = [
   'Nước Ngoài',
 ];
 
-export { Gender, GenderToVN, NATIONALITY_DEFAULT, MaritalStatus, MaritalStatusToVN, StatusToVN, Status, Provinces };
+const Countries = ['Việt Nam', 'Nước Ngoài'];
+
+export {
+  Gender,
+  GenderToVN,
+  NATIONALITY_DEFAULT,
+  MaritalStatus,
+  MaritalStatusToVN,
+  StatusToVN,
+  Status,
+  Provinces,
+  Countries,
+};

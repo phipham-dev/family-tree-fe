@@ -48,7 +48,7 @@ export default function Person() {
     fetchListData();
   }, [isSuccess, isUpdateSuccess, fetchListData]);
 
-  const handleEditClick = () => {
+  const onAddPerson = () => {
     navigate.push(`${location.pathname}/create`);
   };
 
@@ -63,7 +63,7 @@ export default function Person() {
           colorScheme="blue"
           variant="outline"
           size="sm"
-          onClick={() => handleEditClick()}
+          onClick={() => onAddPerson()}
         >
           Thêm mới
         </Button>

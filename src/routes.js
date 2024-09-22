@@ -13,6 +13,7 @@ import Branch from 'views/admin/branch/index.jsx';
 import Group from 'views/admin/group/index.jsx';
 import Person from 'views/admin/person/index.jsx';
 import CreatePerson from 'views/admin/person/components/CreatePerson.js';
+import EditPerson from 'views/admin/person/components/EditPerson.js';
 
 const routes = [
   {
@@ -76,6 +77,13 @@ const routes = [
     layout: '/admin',
     path: '/person/create',
     component: CreatePerson,
+    hidden: true, // Đánh dấu route này là ẩn
+  },
+  {
+    name: 'Chỉnh sửa thành viên',
+    layout: '/admin',
+    path: '/person/edit',
+    component: EditPerson,
     hidden: true, // Đánh dấu route này là ẩn
   },
   {

@@ -16,6 +16,7 @@ import {
   useDisclosure,
   Icon,
 } from '@chakra-ui/react';
+import { useHistory, useLocation } from 'react-router-dom';
 // Custom components
 import Card from 'components/card/Card';
 import React, { useState } from 'react';
@@ -28,6 +29,8 @@ const headerGroups = ['Họ và tên', 'CMND/CCCD', 'Ngày sinh', 'Nơi sinh', '
 const pageSizeOptions = [10, 20, 30, 40, 50];
 
 export default function ListPerson({ docs, page, limit, totalPages, setPage, setLimit, setIsUpdateSuccess }) {
+  const navigate = useHistory();
+  const location = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedDoc, setSelectedDoc] = useState(null);
 
@@ -43,6 +46,11 @@ export default function ListPerson({ docs, page, limit, totalPages, setPage, set
   const handleEditClick = (branch) => {
     setSelectedDoc(branch);
     onOpen();
+  };
+
+  const onEditPerson = (doc) => {
+    setSelectedDoc(doc);
+    navigate.push(`${location.pathname}/edit?id=${doc._id}`);
   };
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
@@ -163,7 +171,7 @@ export default function ListPerson({ docs, page, limit, totalPages, setPage, set
                       variant="outline"
                       size="sm"
                       mr={2}
-                      onClick={() => handleEditClick(e)}
+                      onClick={() => onEditPerson(e)}
                     >
                       Chỉnh sửa
                     </Button>
@@ -184,7 +192,7 @@ export default function ListPerson({ docs, page, limit, totalPages, setPage, set
         </Tbody>
       </Table>
 
-      {selectedDoc && (
+      {/* {selectedDoc && (
         <EditPerson
           selectedDoc={selectedDoc}
           setSelectedDoc={setSelectedDoc}
@@ -192,7 +200,7 @@ export default function ListPerson({ docs, page, limit, totalPages, setPage, set
           onClose={onClose}
           setIsUpdateSuccess={setIsUpdateSuccess}
         />
-      )}
+      )} */}
       <Box
         display="flex"
         justifyContent="space-between"
