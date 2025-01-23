@@ -14,6 +14,8 @@ import Group from 'views/admin/group/index.jsx';
 import Person from 'views/admin/person/index.jsx';
 import CreatePerson from 'views/admin/person/components/CreatePerson.js';
 import EditPerson from 'views/admin/person/components/EditPerson.js';
+import FamilyChart from 'views/admin/chart/index.jsx';
+import DrawVerticalFamilyTree from 'views/admin/chart/components/DrawVerticalFamilyTree.js';
 
 const routes = [
   {
@@ -77,14 +79,14 @@ const routes = [
     layout: '/admin',
     path: '/person/create',
     component: CreatePerson,
-    hidden: true, // Đánh dấu route này là ẩn
+    hidden: true,
   },
   {
     name: 'Chỉnh sửa thành viên',
     layout: '/admin',
     path: '/person/edit',
     component: EditPerson,
-    hidden: true, // Đánh dấu route này là ẩn
+    hidden: true,
   },
   {
     name: 'Thành viên',
@@ -100,7 +102,27 @@ const routes = [
       />
     ),
   },
-
+  {
+    name: 'Vẽ cây gia phả theo chiều dọc',
+    layout: '/admin',
+    path: '/chart/vertical-family',
+    component: DrawVerticalFamilyTree,
+    hidden: true,
+  },
+  {
+    name: 'Cây gia phả',
+    layout: '/admin',
+    path: '/chart',
+    component: FamilyChart,
+    icon: (
+      <Icon
+        as={MdAccountTree}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+  },
   {
     name: 'Sign In',
     layout: '/auth',

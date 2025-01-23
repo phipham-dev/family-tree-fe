@@ -55,8 +55,8 @@ const CreatePerson = () => {
   const [cic, setCic] = useState('');
   const [gender, setGender] = useState(Gender.MALE);
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [group, setGroup] = useState('');
-  const [branch, setBranch] = useState('');
+  const [group, setGroup] = useState(null);
+  const [branch, setBranch] = useState(null);
   const [groups, setGroups] = useState([]);
   const [branches, setBranches] = useState([]);
   const [genNum, setGenNum] = useState('');
@@ -447,8 +447,8 @@ const CreatePerson = () => {
     setDifferentName('');
     setDateOfBirth('');
     setCic('');
-    setGroup('');
-    setBranch('');
+    setGroup(null);
+    setBranch(null);
     setGenNum('');
     setPhoneNumber('');
     setEmailAddress('');

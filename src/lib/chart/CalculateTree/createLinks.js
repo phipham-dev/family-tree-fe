@@ -18,7 +18,7 @@ export function createLinks({ d, tree, is_vertical }) {
     const p1 = d.parents[0],
       p2 = d.parents[1];
 
-    const p = { x: getMid(p1, p2, "x"), y: getMid(p1, p2, "y") };
+    const p = { x: getMid(p1, p2, 'x'), y: getMid(p1, p2, 'y') };
 
     links.push({
       d: Link(d, p),
@@ -44,8 +44,7 @@ export function createLinks({ d, tree, is_vertical }) {
 
         links.push({
           d: Link(child, { x: sx, y: d.y }),
-          _d: () =>
-            Link({ x: sx, y: d.y }, { x: _or(child, "x"), y: _or(child, "y") }),
+          _d: () => Link({ x: sx, y: d.y }, { x: _or(child, 'x'), y: _or(child, 'y') }),
           curve: true,
           id: linkId(child, d, other_parent),
           depth: d.depth + 1,
@@ -54,11 +53,7 @@ export function createLinks({ d, tree, is_vertical }) {
       } else {
         links.push({
           d: Link(child, { x: d.x, y: d.y }),
-          _d: () =>
-            Link(
-              { x: d.x, y: d.y },
-              { x: _or(child, "x"), y: _or(child, "y") }
-            ),
+          _d: () => Link({ x: d.x, y: d.y }, { x: _or(child, 'x'), y: _or(child, 'y') }),
           curve: true,
           id: linkId(child, d),
           depth: d.depth + 1,
@@ -79,13 +74,11 @@ export function createLinks({ d, tree, is_vertical }) {
           [spouse.x, spouse.y],
         ],
         _d: () => [
-          d.is_ancestry ? [_or(d, "x") - 0.0001, _or(d, "y")] : [d.x, d.y], // add -.0001 to line to have some length if d.x === spouse.x
-          d.is_ancestry
-            ? [_or(spouse, "x", true), _or(spouse, "y")]
-            : [d.x - 0.0001, d.y],
+          d.is_ancestry ? [_or(d, 'x') - 0.0001, _or(d, 'y')] : [d.x, d.y], // add -.0001 to line to have some length if d.x === spouse.x
+          d.is_ancestry ? [_or(spouse, 'x', true), _or(spouse, 'y')] : [d.x - 0.0001, d.y],
         ],
         curve: false,
-        id: [d.data.id, spouse.data.id].join(", "),
+        id: [d.data.id, spouse.data.id].join(', '),
         depth: d.depth,
         spouse: true,
         is_ancestry: spouse.is_ancestry,
@@ -101,7 +94,7 @@ export function createLinks({ d, tree, is_vertical }) {
   }
 
   function _or(d, k) {
-    return d.hasOwnProperty("_" + k) ? d["_" + k] : d[k];
+    return d.hasOwnProperty('_' + k) ? d['_' + k] : d[k];
   }
 
   function Link(d, p) {
@@ -120,20 +113,19 @@ export function createLinks({ d, tree, is_vertical }) {
     return args
       .map((d) => d.data.id)
       .sort()
-      .join(", "); // make unique id
+      .join(', '); // make unique id
   }
 
   function otherParent(child, d, tree) {
     return tree.find(
       (d0) =>
-        d0.data.id !== d.data.id &&
-        (d0.data.id === child.data.rels.mother ||
-          d0.data.id === child.data.rels.father)
+        d0.data.id !== d.data.id && (d0.data.id === child.data.rels.mother || d0.data.id === child.data.rels.father),
     );
   }
 
   function getColorForSameClan(d, spouse = null) {
-    let color = "#85C1E9";
+    // let color = "#85C1E9";
+    let color = '#E74C3C';
     let isSameClan = false;
     const isEndClan = d.data.data.isEnd || false;
     const firstName = d.data.data.firstName;
@@ -141,8 +133,9 @@ export function createLinks({ d, tree, is_vertical }) {
       return color;
     }
 
-    if (firstName.includes("Phạm")) {
-      color = "#E74C3C";
+    if (firstName.includes('Phạm')) {
+      // color = "#E74C3C";
+      color = '#85C1E9';
       isSameClan = true;
     }
 

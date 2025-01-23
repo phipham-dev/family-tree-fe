@@ -21,10 +21,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Card from 'components/card/Card';
 import React, { useState } from 'react';
 import { convertTime } from 'utils/time.util.js';
-import EditPerson from './EditPerson.js';
 import convertMaritalStatus from 'utils/convertMaritalStatus.js';
 import convertLiveStatus from 'utils/convertLiveStatus.js';
-import { MdAddCircle } from 'react-icons/md';
+import { MdAccountTree, MdAddCircle } from 'react-icons/md';
 
 const headerGroups = ['Họ và tên', 'CMND/CCCD', 'Ngày sinh', 'Nơi sinh', 'SĐT', 'Hôn nhân', 'Trạng thái', 'Hành động'];
 const pageSizeOptions = [10, 20, 30, 40, 50];
@@ -44,14 +43,9 @@ export default function ListPerson({ docs, page, limit, totalPages, setPage, set
     setPage(1); // Reset lại trang về 1 khi thay đổi limit
   };
 
-  const handleEditClick = (branch) => {
-    setSelectedDoc(branch);
-    onOpen();
-  };
-
-  const onEditPerson = (doc) => {
+  const onDrawVerticalFamilyTree = (doc) => {
     setSelectedDoc(doc);
-    navigate.push(`${location.pathname}/edit?id=${doc._id}`);
+    navigate.push(`${location.pathname}/vertical-family?id=${doc._id}`);
   };
 
   const onAddPerson = () => {
@@ -180,24 +174,15 @@ export default function ListPerson({ docs, page, limit, totalPages, setPage, set
                 <Td>
                   <Flex>
                     <Button
-                      leftIcon={<EditIcon />}
+                      leftIcon={<MdAccountTree />}
                       colorScheme="blue"
                       variant="outline"
                       size="sm"
                       mr={2}
-                      onClick={() => onEditPerson(e)}
+                      onClick={() => onDrawVerticalFamilyTree(e)}
                     >
-                      Chỉnh sửa
+                      Xem cây gia phả
                     </Button>
-                    {/* <Button
-                      leftIcon={<DeleteIcon />}
-                      colorScheme="red"
-                      variant="outline"
-                      size="sm"
-                      // ml={2}
-                    >
-                      Delete
-                    </Button> */}
                   </Flex>
                 </Td>
               </Tr>
@@ -206,15 +191,6 @@ export default function ListPerson({ docs, page, limit, totalPages, setPage, set
         </Tbody>
       </Table>
 
-      {/* {selectedDoc && (
-        <EditPerson
-          selectedDoc={selectedDoc}
-          setSelectedDoc={setSelectedDoc}
-          isOpen={isOpen}
-          onClose={onClose}
-          setIsUpdateSuccess={setIsUpdateSuccess}
-        />
-      )} */}
       <Box
         display="flex"
         justifyContent="space-between"

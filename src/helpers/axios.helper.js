@@ -6,6 +6,10 @@ class Axios {
     this.instance = axios.create({
       baseURL: baseUrl,
       withCredentials,
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Accept: 'application/json',
+      },
     });
   }
 
