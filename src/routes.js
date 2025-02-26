@@ -126,7 +126,7 @@ const routes = [
   {
     name: 'Sign In',
     layout: '/auth',
-    path: '/sign-in',
+    path: '/login',
     icon: (
       <Icon
         as={MdLock}

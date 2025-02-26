@@ -10,6 +10,15 @@ import { ChakraProvider } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { ThemeEditorProvider } from '@hypertheme-editor/chakra-ui';
 
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={(props) => (1 === 1 ? <Component {...props} /> : <Redirect to="/auth/login" />)}
+    />
+  );
+};
+
 const rootElement = document.getElementById('root');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
@@ -23,7 +32,7 @@ if (rootElement) {
                 path={`/auth`}
                 component={AuthLayout}
               />
-              <Route
+              <ProtectedRoute
                 path={`/admin`}
                 component={AdminLayout}
               />
@@ -38,3 +47,28 @@ if (rootElement) {
     </ChakraProvider>,
   );
 }
+
+// import AuthService from './services/AuthService';
+
+// const App = () => {
+//   return (
+//     <ChakraProvider theme={theme}>
+//       <HashRouter>
+//         <Switch>
+//           <Route
+//             path="/auth"
+//             component={AuthLayout}
+//           />
+//           <ProtectedRoute
+//             path="/admin"
+//             component={AdminLayout}
+//           />
+//           <Redirect
+//             from="/"
+//             to="/auth/login"
+//           />
+//         </Switch>
+//       </HashRouter>
+//     </ChakraProvider>
+//   );
+// };
